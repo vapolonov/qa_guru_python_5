@@ -37,7 +37,7 @@ def test_submit_automation_practice_form():
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-1]').click()
 
     # Load a file
-    # s('#uploadPicture').send_keys('/tests/files/example.txt')
+    # s('#uploadPicture').type('/tests/files/example.txt')
 
     # Filling the address
     s('#currentAddress').type('Russia, Nizhny Novgorod')
@@ -47,20 +47,27 @@ def test_submit_automation_practice_form():
     s(by.text('Lucknow')).click()
 
     # Sending the form
-    s('#submit').perform(command.js.click)
+    s('footer').perform(command.js.remove)
+    s('#submit').click()
+    # s('#submit').perform(command.js.click)
 
     # Assertions
     s('#example-modal-sizes-title-lg').should(have.exact_text('Thanks for submitting the form'))
+    results = ['Vasiliy Apolonov', 'test@mail.com', 'Male', '9101112233', '09 September,1974',
+               'Maths, English, Physics', 'Reading, Sports', 'Russia, Nizhny Novgorod', 'Uttar Pradesh Lucknow']
+    for result in results:
+        s('.table-responsive').should(have.text(result))
+
     # browser.all('.table-responsive tr').should(have.texts('Student Name Vasiliy Apolonov', 'Student Email test@mail.com'))
-    s('.table-responsive').should(have.text('Vasiliy Apolonov'))
-    s(".table-responsive").should(have.text('test@mail.com'))
-    s(".table-responsive").should(have.text('Male'))
-    s(".table-responsive").should(have.text('9101112233'))
-    s(".table-responsive").should(have.text('09 September,1974'))
-    s(".table-responsive").should(have.text('Maths, English, Physics'))
-    s(".table-responsive").should(have.text('Reading, Sports'))
-    s(".table-responsive").should(have.text('Russia, Nizhny Novgorod'))
-    s(".table-responsive").should(have.text('Uttar Pradesh Lucknow'))
+    # s('.table-responsive').should(have.text('Vasiliy Apolonov'))
+    # s(".table-responsive").should(have.text('test@mail.com'))
+    # s(".table-responsive").should(have.text('Male'))
+    # s(".table-responsive").should(have.text('9101112233'))
+    # s(".table-responsive").should(have.text('09 September,1974'))
+    # s(".table-responsive").should(have.text('Maths, English, Physics'))
+    # s(".table-responsive").should(have.text('Reading, Sports'))
+    # s(".table-responsive").should(have.text('Russia, Nizhny Novgorod'))
+    # s(".table-responsive").should(have.text('Uttar Pradesh Lucknow'))
 
 
 
