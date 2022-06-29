@@ -2,7 +2,7 @@ import time
 
 from selene import have, by, command
 from selene.support.shared import browser
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 
 class Subjects:
@@ -28,12 +28,14 @@ def test_submit_automation_practice_form():
     s('#genterWrapper').s(by.text('Male')).click()
 
     # Select Date of Birth
-    # s('#dateOfBirthInput').click()
-    # s('.react-datepicker__year-select').s('[value="1974"]').click()
-    # s('.react-datepicker__month-select').s('[value="8"]').click()
-    # s('.react-datepicker__day--009').click()
+    s('#dateOfBirthInput').click()
+    s('.react-datepicker__year-select').s('[value="1974"]').click()
+    s('.react-datepicker__month-select').s('[value="8"]').click()
+    s('.react-datepicker__day--009').click()
+    '''
     # browser.execute_script('document.querySelector("#dateOfBirthInput").value = "27 Jun 2022";')
-    browser.element('#dateOfBirthInput').perform(command.js.set_value('09 Sep 1974')).press_enter()
+    # browser.element('#dateOfBirthInput').perform(command.js.set_value('09 Sep 1974')).press_enter()
+    '''
 
     # Select Subjects
     s('#subjectsInput').set_value(Subjects.maths).press_enter()
@@ -45,9 +47,11 @@ def test_submit_automation_practice_form():
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-1]').click()
 
     # Load a file
+    '''
     # import os
     # s('#uploadPicture').send_keys(os.path.abspath('../resources/example.txt'))
     # s('#uploadPicture').send_keys('C:\\temp\\example.txt')
+    '''
 
     def resource(path):
         from pathlib import Path
@@ -68,10 +72,13 @@ def test_submit_automation_practice_form():
     s(by.text('Lucknow')).click()
 
     # Sending the form
-    s('footer').perform(command.js.remove)
-    s('#submit').click()
-    # s('#submit').perform(command.js.click)
+    '''
+    # s('footer').perform(command.js.remove)
+    # s('#submit').click()
+    '''
+    s('#submit').perform(command.js.click)
 
+    # Assertions
     s('.table-responsive').should(have.text('Vasiliy Apolonov'))
     s('.table-responsive').should(have.text('test@mail.com'))
     s('.table-responsive').should(have.text('Male'))
@@ -82,7 +89,6 @@ def test_submit_automation_practice_form():
     s('.table-responsive').should(have.text('example.txt'))
     s('.table-responsive').should(have.text('Russia, Nizhny Novgorod'))
     s('.table-responsive').should(have.text('Uttar Pradesh Lucknow'))
-    # browser.elements('.table-responsive').should(have.texts(''))
 
 
 

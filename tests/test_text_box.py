@@ -37,7 +37,6 @@ def test_submit_form():
     for ads in browser.all('[id^=google_ads]'):
         ads._execute_script('element.remove()')
 
-
     browser.all('#output p').should(have.texts(
         'yasha',
         'test@test.com',
