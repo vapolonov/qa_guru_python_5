@@ -27,5 +27,3 @@ def test_edit_web_tables():
     ss('.rt-tr').element(4).ss('.rt-td').element(5).should(have.text('QA automation'))
 
     # time.sleep(10)
-
-

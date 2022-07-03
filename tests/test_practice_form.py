@@ -26,16 +26,24 @@ def test_submit_automation_practice_form():
     s('#genterWrapper').s('label[for=gender-radio-2]').click()
     time.sleep(1)
     s('#genterWrapper').s(by.text('Male')).click()
+    '''
+    OR:
+    gender_group = s('#genterWrapper')
+    gender_group.all('.custom-radio').element_by(have.exact_text('Male')).click()
+    '''
 
     # Select Date of Birth
     s('#dateOfBirthInput').click()
     s('.react-datepicker__year-select').s('[value="1974"]').click()
     s('.react-datepicker__month-select').s('[value="8"]').click()
     s('.react-datepicker__day--009').click()
+
     '''
-    # browser.execute_script('document.querySelector("#dateOfBirthInput").value = "27 Jun 2022";')
-    # browser.element('#dateOfBirthInput').perform(command.js.set_value('09 Sep 1974')).press_enter()
+    browser.execute_script('document.querySelector("#dateOfBirthInput").value = "27 Jun 2022";')
+    browser.element('#dateOfBirthInput').perform(command.js.set_value('09 Sep 1974')).press_enter()
+    browser.element('#dateOfBirthInput').with_(set_value_by_js=True).set_value('09 Sep 1974')
     '''
+
 
     # Select Subjects
     s('#subjectsInput').set_value(Subjects.maths).press_enter()
@@ -46,13 +54,26 @@ def test_submit_automation_practice_form():
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-2]').click()
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-1]').click()
 
-    # Load a file
     '''
-    # import os
-    # s('#uploadPicture').send_keys(os.path.abspath('../resources/example.txt'))
-    # s('#uploadPicture').send_keys('C:\\temp\\example.txt')
+    # OR
+    music_hobby = browser.element('#hobbies-checkbox-1')
+    music_hobby.click()
+
+    browser.element('#hobbiesWrapper').all('.custom-checkbox').element_by(have.exact_text('Music')).click()
     '''
 
+    # Load a file
+
+    import os
+    s('#uploadPicture').send_keys(os.path.abspath('../resources/example.txt'))
+
+    '''
+    ABSOLUTE PATH:
+    s('#uploadPicture').send_keys('C:\\temp\\example.txt')
+    '''
+
+    '''
+    OR:
     def resource(path):
         from pathlib import Path
         import demoqa_tests
@@ -63,6 +84,7 @@ def test_submit_automation_practice_form():
             joinpath(f'resources/{path}'))
 
     browser.element('#uploadPicture').send_keys(resource('example.txt'))
+    '''
 
     # Filling the address
     s('#currentAddress').type('Russia, Nizhny Novgorod')
@@ -78,7 +100,7 @@ def test_submit_automation_practice_form():
     '''
     s('#submit').perform(command.js.click)
 
-    # Assertions
+    # Assert
     s('.table-responsive').should(have.text('Vasiliy Apolonov'))
     s('.table-responsive').should(have.text('test@mail.com'))
     s('.table-responsive').should(have.text('Male'))
@@ -90,15 +112,28 @@ def test_submit_automation_practice_form():
     s('.table-responsive').should(have.text('Russia, Nizhny Novgorod'))
     s('.table-responsive').should(have.text('Uttar Pradesh Lucknow'))
 
+    '''
+    OR
+    s('.table').ss('tr').should(have.texts('Values',
+                                           'Vasiliy Apolonov',
+                                           'test@mail.com',
+                                           'Male',
+                                           '9101112233',
+                                           '09 September,1974',
+                                           'Maths, English, Physics',
+                                           'Reading, Sports',
+                                           'example.txt',
+                                           'Russia, Nizhny Novgorod',
+                                           'Uttar Pradesh Lucknow'))
+    '''
 
+    browser.all('table tr')[5].all('td')[1].should(have.exact_text('09 September,1974'))
 
+    def cells_of_row(index, should_have_texts: list[str]):
+        browser.element('.modal-dialog').all('table tr')[index].all('td').should(have.exact_texts(*should_have_texts))
 
+    cells_of_row(index=5, should_have_texts=[
+        'Date of Birth', '09 September,1974'
+    ])
 
-
-
-
-
-
-
-
-
+    cells_of_row(index=6, should_have_texts=['Subjects', 'Maths, English, Physics'])

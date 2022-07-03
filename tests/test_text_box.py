@@ -18,6 +18,7 @@ def test_submit_form():
     browser.element('#permanentAddress').type('Universe & broad')
     browser.element('#submit').perform(command.js.scroll_into_view).click()
 
+
     browser.execute_script(
         '''document.querySelectorAll("[id^=google_ads]"))
                .forEach(element => element.remove())'''
