@@ -45,5 +45,11 @@ def test_edit_web_tables():
     # delete third line
     s('#delete-record-3').click()
 
+    # checking that there is no deleted text in row
     s('.rt-tbody').ss('.rt-tr-group')[2].should(have.no.text('Kierra\nGentry\n29\nkierra@example.com\n2000\nLegal'))
 
+    # checking all table that there is no deleted text in all rows
+    s('.rt-tbody').ss('.rt-tr-group').should(have.texts('Cierra\nVega\n39\ncierra@example.com\n10000\nInsurance',
+                                                        'Ivan\nSidorov\n28\ntest@test.com\n50000\nHR',
+                                                        'Vasiliy\nApolonov\n47\ntest@mail.com\n100000\nQA automation',
+                                                        ' ', ' ', ' ', ' ', ' ', ' ', ' '))
